@@ -196,6 +196,42 @@ def test_run_backtest_cached_returns_dashboard_dict(mocked_load_prices):
     assert isinstance(result["oos_sharpe"], float)
 
 
+def test_run_backtest_cached_degrades_when_train_history_unavailable(yf_panel_factory):
+    """REGRESSION: when the library's price cache holds only the OOS window
+    (because earlier runs fetched only the OOS range and cache extends right
+    not left), the train fetch returns empty after dropna. The adapter must
+    NOT raise — it must fall back to OOS-only with `is_sharpe=nan` so the
+    page still renders."""
+    from unittest.mock import patch as _patch
+
+    from app.cache import run_backtest_cached
+
+    def _train_blind(tickers, start=None, end=None, **kw):
+        # Mimic a cache that only holds 2025+ data: train fetches (2024)
+        # come back empty.
+        s = pd.Timestamp(start) if start is not None else pd.Timestamp("2025-01-01")
+        if s.year < 2025:
+            return yf_panel_factory(
+                list(tickers), start="2025-01-01", end="2025-01-02"
+            ).iloc[0:0]
+        return yf_panel_factory(list(tickers), start=str(start), end=str(end))
+
+    with _patch("pairs.data.load_prices", side_effect=_train_blind):
+        result = run_backtest_cached.__wrapped__(
+            ("KO", "PEP"),
+            date(2025, 6, 1),
+            date(2026, 5, 1),
+            "large_cap_realistic",
+            "fixed_notional",
+        )
+
+    assert isinstance(result, dict)
+    assert result["train_available"] is False
+    assert pd.isna(result["is_sharpe"])
+    assert not pd.isna(result["oos_sharpe"])
+    assert isinstance(result["equity_curve"], pd.Series)
+
+
 @pytest.mark.parametrize("sizing", ["fixed_notional", "vol_target", "kelly_capped"])
 def test_run_backtest_cached_accepts_every_ui_sizing(sizing, mocked_load_prices):
     """Every sizing string the UI offers must round-trip through the adapter

@@ -270,45 +270,60 @@ def run_backtest_cached(
       power users / future expansion
     """
     # Symmetric IS / OOS split: train on the year before oos_start, then
-    # trade on [oos_start, oos_end].
+    # trade on [oos_start, oos_end]. We do TWO independent fetches so each
+    # window has its own cache key — the library's cache extends right
+    # (later dates) but not left, so a previous OOS-only fetch can leave
+    # the train window unsatisfied if we ask for one big range and slice.
     train_start = (pd.Timestamp(oos_start) - pd.Timedelta(days=365)).date()
     train_end = (pd.Timestamp(oos_start) - pd.Timedelta(days=1)).date()
-    full = fetch_prices(pair, train_start, oos_end)
-    if pair[0] not in full.columns or pair[1] not in full.columns:
-        msg = f"missing price data for {pair}"
-        raise ValueError(msg)
-    joined = full[list(pair)].dropna()
 
-    train_mask = joined.index <= pd.Timestamp(train_end)
-    oos_mask = joined.index >= pd.Timestamp(oos_start)
-    train_panel = joined.loc[train_mask]
-    oos_panel = joined.loc[oos_mask]
-    if len(train_panel) < 60 or len(oos_panel) < 30:
+    def _safe_fetch(start: date, end: date) -> pd.DataFrame | None:
+        try:
+            wide = fetch_prices(pair, start, end)
+        except Exception:
+            return None
+        if pair[0] not in wide.columns or pair[1] not in wide.columns:
+            return None
+        panel = wide[list(pair)].dropna()
+        return panel if len(panel) > 0 else None
+
+    train_panel = _safe_fetch(train_start, train_end)
+    oos_panel = _safe_fetch(oos_start, oos_end)
+
+    if oos_panel is None or len(oos_panel) < 30:
         msg = (
-            f"insufficient history for {pair}: train={len(train_panel)} rows, "
-            f"oos={len(oos_panel)} rows"
+            f"insufficient OOS history for {pair}: "
+            f"got {0 if oos_panel is None else len(oos_panel)} rows on "
+            f"[{oos_start}, {oos_end}]"
         )
         raise ValueError(msg)
 
-    is_result, _is_beta = _run_backtest_window(
-        train_panel[pair[0]], train_panel[pair[1]], cost_profile, sizing
-    )
-    oos_result, _oos_beta = _run_backtest_window(
+    have_train = train_panel is not None and len(train_panel) >= 60
+
+    oos_result, _ = _run_backtest_window(
         oos_panel[pair[0]], oos_panel[pair[1]], cost_profile, sizing
     )
-
-    is_m = is_result.metrics
     oos_m = oos_result.metrics
+
+    is_result = None
+    is_sharpe_val: float = float("nan")
+    if have_train:
+        is_result, _ = _run_backtest_window(
+            train_panel[pair[0]], train_panel[pair[1]], cost_profile, sizing
+        )
+        is_sharpe_val = float(is_result.metrics.get("sharpe_net", float("nan")))
+
     return {
         "is_result": is_result,
         "oos_result": oos_result,
-        "is_sharpe": float(is_m.get("sharpe_net", float("nan"))),
+        "is_sharpe": is_sharpe_val,
         "oos_sharpe": float(oos_m.get("sharpe_net", float("nan"))),
-        "sharpe": float(oos_m.get("sharpe_net", float("nan"))),  # for the page's fallback chain
+        "sharpe": float(oos_m.get("sharpe_net", float("nan"))),  # page fallback chain
         "max_drawdown": float(oos_m.get("max_drawdown", float("nan"))),
         "turnover": float(oos_m.get("turnover", float("nan"))),
         "equity_curve": oos_result.equity,
         "trades": oos_result.trades,
+        "train_available": have_train,
     }
 
 
