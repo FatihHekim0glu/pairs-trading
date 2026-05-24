@@ -1,0 +1,239 @@
+[build-system]
+requires = ["hatchling>=1.27"]
+build-backend = "hatchling.build"
+
+[project]
+name = "pairs-trading"
+version = "0.1.0.dev0"
+description = "Production-grade pairs trading via cointegration with walk-forward evaluation."
+readme = "README.md"
+requires-python = ">=3.11"
+license = "MIT"
+authors = [{ name = "Fatih Hekimoglu" }]
+keywords = [
+    "pairs-trading",
+    "cointegration",
+    "statistical-arbitrage",
+    "quantitative-finance",
+    "backtesting",
+    "walk-forward",
+]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Financial and Insurance Industry",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Office/Business :: Financial :: Investment",
+    "Topic :: Scientific/Engineering :: Information Analysis",
+    "Typing :: Typed",
+]
+dependencies = [
+    "numpy>=2.0",
+    "pandas>=2.2",
+    "pandas-stubs>=2.2",
+    "scipy>=1.14",
+    "statsmodels>=0.14.4",
+    "pydantic>=2.10",
+    "pydantic-settings>=2.7",
+    "platformdirs>=4.3",
+    "pyyaml>=6.0",
+    "pyarrow>=18",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.3",
+    "pytest-cov>=6.0",
+    "pytest-xdist>=3.6",
+    "pytest-randomly>=3.16",
+    "hypothesis>=6.118",
+    "syrupy>=4.8",
+    "ruff>=0.8.4",
+    "mypy>=1.13",
+    "pre-commit>=4.0",
+]
+app = [
+    "streamlit>=1.40",
+    "plotly>=5.24",
+    "yfinance>=0.2.50",
+    "pandas-market-calendars>=4.4",
+    "streamlit-aggrid>=1.0",
+    "pyarrow>=18",
+    "kaleido",
+]
+docs = [
+    "mkdocs>=1.6",
+    "mkdocs-material>=9.5.49",
+    "mkdocstrings[python]>=0.27",
+]
+stretch = [
+    "arch>=7.0",
+    "pykalman>=0.10",
+]
+all = ["pairs-trading[dev,app,docs,stretch]"]
+
+[project.urls]
+Homepage = "https://github.com/fatihhekimoglu/pairs-trading"
+Repository = "https://github.com/fatihhekimoglu/pairs-trading"
+Documentation = "https://fatihhekimoglu.github.io/pairs-trading/"
+Issues = "https://github.com/fatihhekimoglu/pairs-trading/issues"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/pairs"]
+
+[tool.hatch.build.targets.sdist]
+include = [
+    "src/",
+    "tests/",
+    "docs/",
+    "pyproject.toml",
+    "README.md",
+    "LICENSE",
+    "CHANGELOG.md",
+]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+src = ["src", "tests"]
+
+[tool.ruff.lint]
+select = [
+    "E",
+    "F",
+    "W",
+    "I",
+    "UP",
+    "B",
+    "C4",
+    "SIM",
+    "RET",
+    "PTH",
+    "TID",
+    "NPY",
+    "PD",
+    "ICN",
+    "FA",
+    "ISC",
+    "PL",
+    "RUF",
+    "ARG",
+    "ANN",
+]
+ignore = [
+    "E501",
+    "PLR0913",
+    "PLR0912",
+    "PLR0915",
+    "PLC0415",
+    "C408",
+    "RUF046",
+    "ANN401",
+    "ISC001",
+    "PLR2004",
+    "SIM108",
+    "RET504",
+    "PD011",
+    "PTH105",
+    "PTH123",
+    "PTH202",
+    "ANN001",
+    "ANN002",
+    "ANN201",
+]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**" = ["ANN", "D", "PLR2004", "S101", "ARG"]
+"examples/**" = ["ANN", "D", "T201"]
+"docs/**" = ["D", "ANN"]
+"scripts/**" = ["ANN", "T201"]
+
+[tool.ruff.format]
+quote-style = "double"
+docstring-code-format = true
+
+[tool.mypy]
+python_version = "3.11"
+strict = true
+warn_unreachable = true
+files = ["src"]
+
+[[tool.mypy.overrides]]
+module = "statsmodels.*"
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = "arch.*"
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = "yfinance.*"
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = "pykalman.*"
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = "pandas_market_calendars.*"
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = "streamlit.*"
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = "streamlit_aggrid.*"
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = "plotly.*"
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = "kaleido.*"
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = "mlfinlab.*"
+ignore_missing_imports = true
+
+[tool.pytest.ini_options]
+minversion = "8.0"
+testpaths = ["tests"]
+addopts = "-ra --strict-config --strict-markers"
+markers = [
+    "unit",
+    "property",
+    "integration",
+    "slow",
+    "network",
+]
+xfail_strict = true
+filterwarnings = [
+    "ignore::DeprecationWarning:statsmodels.*",
+    "ignore::FutureWarning:pandas.*",
+]
+
+[tool.coverage.run]
+branch = true
+source = ["src/pairs"]
+omit = ["src/pairs/_version.py"]
+
+[tool.coverage.report]
+fail_under = 85
+show_missing = true
+skip_covered = false
+exclude_also = [
+    "if TYPE_CHECKING:",
+    "raise NotImplementedError",
+    "@overload",
+    "\\.\\.\\.",
+]

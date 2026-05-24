@@ -1,0 +1,8 @@
+# Prefer `pip install -e .[app]`; this file is a fallback for HF Spaces if
+# pyproject extras do not resolve. Pins must match the [app] extra in pyproject.toml.
+streamlit>=1.40,<2.0
+plotly>=5.24,<6.0
+streamlit-aggrid>=1.0,<2.0
+pandas>=2.1,<3.0
+numpy>=1.26,<3.0
+kaleido>=0.2.1,<1.0

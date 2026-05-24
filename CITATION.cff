@@ -1,0 +1,19 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+type: software
+title: "pairs-trading: cointegration-based statistical arbitrage with walk-forward validation"
+version: "0.1.0"
+date-released: "2026-05-23"
+license: MIT
+repository-code: "https://github.com/noxire-dev/pairs-trading"
+url: "https://github.com/noxire-dev/pairs-trading"
+authors:
+  - family-names: "Hekimoglu"
+    given-names: "Fatih"
+keywords:
+  - "pairs trading"
+  - "cointegration"
+  - "statistical arbitrage"
+  - "walk-forward validation"
+  - "deflated sharpe ratio"
+  - "quantitative finance"

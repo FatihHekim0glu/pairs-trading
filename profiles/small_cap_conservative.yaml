@@ -1,0 +1,6 @@
+name: small_cap_conservative
+description: "Russell 2000 lower tier"
+slippage: {type: HalfSpreadSlippage, spread_bps: 40.0}
+commission: {type: PerShareCommission, per_share: 0.005, min_per_trade: 1.0}
+borrow: {type: ConstantBorrow, rate_bps_annual: 300}
+expected_round_trip_bps: 200
