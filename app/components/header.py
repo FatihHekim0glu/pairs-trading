@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import streamlit as st
 
-OWNER = "noxire-dev"
+OWNER = "FatihHekim0glu"
 REPO = "pairs-trading"
 
 BADGES = [

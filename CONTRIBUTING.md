@@ -7,7 +7,7 @@ This is currently a single-maintainer repository. Pull requests are welcome but 
 The project uses `uv` for dependency resolution and an editable install for development.
 
 ```bash
-git clone https://github.com/noxire-dev/pairs-trading && cd pairs-trading
+git clone https://github.com/FatihHekim0glu/pairs-trading && cd pairs-trading
 uv sync --all-extras
 ```
 

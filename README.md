@@ -2,7 +2,7 @@
 
 Cointegration-based statistical arbitrage with walk-forward validation, Deflated Sharpe ratios, and an honest in-sample-vs-out-of-sample comparison. The Out-of-Sample number is the headline because that is what survives contact with the future.
 
-![CI](https://github.com/noxire-dev/pairs-trading/actions/workflows/ci.yml/badge.svg) ![Coverage](https://codecov.io/gh/noxire-dev/pairs-trading/branch/main/graph/badge.svg) ![License](https://img.shields.io/badge/license-MIT-blue.svg) ![Python](https://img.shields.io/badge/python-3.11+-blue.svg) ![Ruff](https://img.shields.io/badge/code%20style-ruff-blue.svg) ![Mypy](https://img.shields.io/badge/types-mypy%20strict-blue.svg)
+![CI](https://github.com/FatihHekim0glu/pairs-trading/actions/workflows/ci.yml/badge.svg) ![Coverage](https://codecov.io/gh/FatihHekim0glu/pairs-trading/branch/main/graph/badge.svg) ![License](https://img.shields.io/badge/license-MIT-blue.svg) ![Python](https://img.shields.io/badge/python-3.11+-blue.svg) ![Ruff](https://img.shields.io/badge/code%20style-ruff-blue.svg) ![Mypy](https://img.shields.io/badge/types-mypy%20strict-blue.svg)
 
 ![In-sample vs Out-of-Sample Sharpe — pending generation by app/plots/is_vs_oos_bars.py](assets/money_chart.png)
 
@@ -13,7 +13,7 @@ Most public pairs-trading repositories report an in-sample Sharpe above 2 and st
 ## 60-second Quickstart
 
 ```bash
-git clone https://github.com/noxire-dev/pairs-trading && cd pairs-trading
+git clone https://github.com/FatihHekim0glu/pairs-trading && cd pairs-trading
 pip install -e ".[dev,app]"
 pytest -q
 streamlit run app/streamlit_app.py
@@ -66,4 +66,4 @@ If you use this work, please cite via [`CITATION.cff`](CITATION.cff).
 
 ## Contact
 
-GitHub: [@noxire-dev](https://github.com/noxire-dev)
+GitHub: [@FatihHekim0glu](https://github.com/FatihHekim0glu)

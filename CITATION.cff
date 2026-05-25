@@ -5,8 +5,8 @@ title: "pairs-trading: cointegration-based statistical arbitrage with walk-forwa
 version: "0.1.0"
 date-released: "2026-05-23"
 license: MIT
-repository-code: "https://github.com/noxire-dev/pairs-trading"
-url: "https://github.com/noxire-dev/pairs-trading"
+repository-code: "https://github.com/FatihHekim0glu/pairs-trading"
+url: "https://github.com/FatihHekim0glu/pairs-trading"
 authors:
   - family-names: "Hekimoglu"
     given-names: "Fatih"
