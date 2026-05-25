@@ -66,8 +66,7 @@ def test_kalman_backend_parity() -> None:
     tail = slice(100, None)
     corr = float(np.corrcoef(np_beta[tail], pk_beta[tail])[0, 1])
     assert corr > 0.85, (
-        f"backends should track each other qualitatively after burn-in; "
-        f"corr={corr:.3f}"
+        f"backends should track each other qualitatively after burn-in; corr={corr:.3f}"
     )
     # Final-state values should be within ~10%.
     np.testing.assert_allclose(np_beta[-1], pk_beta[-1], rtol=0.10, atol=0.10)
