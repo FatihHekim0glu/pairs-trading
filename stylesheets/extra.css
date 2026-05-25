@@ -1,0 +1,24 @@
+/* Project-specific overrides for the Material theme. */
+
+:root {
+  --md-code-font: "JetBrains Mono", "Fira Code", ui-monospace, SFMono-Regular,
+    Menlo, Consolas, monospace;
+}
+
+.md-typeset table:not([class]) {
+  font-size: 0.78rem;
+}
+
+.md-typeset .admonition.note,
+.md-typeset details.note {
+  border-color: var(--md-accent-fg-color);
+}
+
+.md-typeset h1 {
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.md-typeset code {
+  word-break: normal;
+}
