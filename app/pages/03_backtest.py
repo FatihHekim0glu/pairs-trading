@@ -24,7 +24,12 @@ def _form() -> dict:
         oos_end = c4.date_input("OOS end", key="oos_end")
         cost_profile = st.selectbox(
             "Cost profile",
-            ["large_cap_optimistic", "large_cap_realistic", "mid_cap_realistic", "small_cap_conservative"],
+            [
+                "large_cap_optimistic",
+                "large_cap_realistic",
+                "mid_cap_realistic",
+                "small_cap_conservative",
+            ],
             index=1,
             key="cost_profile",
         )
@@ -124,9 +129,7 @@ def main() -> None:
     if pd.notna(is_sharpe) and pd.notna(oos_sharpe):
         gap = is_sharpe - oos_sharpe
         if gap > 1.0:
-            st.warning(
-                f"IS-OOS Sharpe gap is {gap:+.2f}. This is a strong overfitting signal."
-            )
+            st.warning(f"IS-OOS Sharpe gap is {gap:+.2f}. This is a strong overfitting signal.")
         elif gap > 0.5:
             st.info(f"IS-OOS Sharpe gap is {gap:+.2f}. Mild degradation observed.")
 

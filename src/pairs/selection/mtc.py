@@ -20,9 +20,7 @@ from pairs._exceptions import InputError
 
 __all__ = ["apply_mtc"]
 
-_SUPPORTED: Final[frozenset[str]] = frozenset(
-    {"fdr_bh", "fdr_by", "holm", "bonferroni", "none"}
-)
+_SUPPORTED: Final[frozenset[str]] = frozenset({"fdr_bh", "fdr_by", "holm", "bonferroni", "none"})
 
 
 def apply_mtc(
@@ -60,10 +58,7 @@ def apply_mtc(
         input series contains non-finite values.
     """
     if method not in _SUPPORTED:
-        msg = (
-            f"unsupported MTC method {method!r}; "
-            f"expected one of {sorted(_SUPPORTED)}"
-        )
+        msg = f"unsupported MTC method {method!r}; expected one of {sorted(_SUPPORTED)}"
         raise InputError(msg)
     if not (0.0 < alpha < 1.0):
         msg = f"alpha must lie in (0, 1); got {alpha}"

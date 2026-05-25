@@ -171,7 +171,11 @@ class EvaluationProtocol:
         )
 
         pbo: PBOResult | None
-        if trial_returns is not None and trial_returns.shape[1] >= 2 and trial_returns.shape[0] >= self.s_partitions:
+        if (
+            trial_returns is not None
+            and trial_returns.shape[1] >= 2
+            and trial_returns.shape[0] >= self.s_partitions
+        ):
             pbo = pbo_cscv(trial_returns, s=self.s_partitions)
         else:
             pbo = None
@@ -217,7 +221,9 @@ class EvaluationProtocol:
             memmel=memmel,
             spa=spa,
             hac_se=float(hac) if np.isfinite(hac) else 0.0,
-            is_oos_decay_pct=float(is_oos_decay_pct) if np.isfinite(is_oos_decay_pct) else float("nan"),
+            is_oos_decay_pct=float(is_oos_decay_pct)
+            if np.isfinite(is_oos_decay_pct)
+            else float("nan"),
             broken_pair_count=int(broken_pair_count),
             spec_hash=spec_hash,
             trial_id=int(trial_id),

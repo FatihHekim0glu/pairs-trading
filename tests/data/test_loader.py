@@ -21,7 +21,9 @@ def _make_frame(
     end: str,
 ) -> pd.DataFrame:
     idx = pd.date_range(start, end, freq="B", tz="UTC", name="date", inclusive="left")
-    cols = pd.MultiIndex.from_product([tickers, ["Open", "High", "Low", "Close", "Adj Close", "Volume"]])
+    cols = pd.MultiIndex.from_product(
+        [tickers, ["Open", "High", "Low", "Close", "Adj Close", "Volume"]]
+    )
     data = np.tile(np.linspace(100, 110, len(idx))[:, None], (1, len(cols)))
     return pd.DataFrame(data, index=idx, columns=cols)
 

@@ -170,9 +170,14 @@ def test_screen_diagnostic_schema_exact(monkeypatch: pytest.MonkeyPatch) -> None
         alpha=0.10,
     )
     expected = [
-        "pair_id", "ticker_a", "ticker_b",
-        "p_raw", "hedge_ratio", "half_life",
-        "q_value", "survives_mtc",
+        "pair_id",
+        "ticker_a",
+        "ticker_b",
+        "p_raw",
+        "hedge_ratio",
+        "half_life",
+        "q_value",
+        "survives_mtc",
     ]
     assert list(result.diagnostics.columns) == expected
     assert result.diagnostics["survives_mtc"].dtype == bool

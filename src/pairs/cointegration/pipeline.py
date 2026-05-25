@@ -91,11 +91,7 @@ def full_pipeline(
 
     johansen_ok = joh is None or joh.rank >= 1
     cointegrated = bool(
-        eg.pvalue < alpha
-        and johansen_ok
-        and kpss_res.is_stationary
-        and leg0.is_i1
-        and leg1.is_i1,
+        eg.pvalue < alpha and johansen_ok and kpss_res.is_stationary and leg0.is_i1 and leg1.is_i1,
     )
 
     return PipelineResult(

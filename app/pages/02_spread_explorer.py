@@ -33,9 +33,15 @@ def _pair_options() -> list[tuple[str, str]]:
 @st.fragment
 def _spread_panel(pair: tuple[str, str]) -> None:
     c1, c2, c3 = st.columns(3)
-    z_entry = c1.slider("Entry threshold", 1.0, 4.0, st.session_state.z_entry, 0.1, key="z_entry_slider")
-    z_exit = c2.slider("Exit threshold", 0.0, 2.0, st.session_state.z_exit, 0.1, key="z_exit_slider")
-    lookback = c3.slider("Lookback (days)", 60, 504, st.session_state.lookback_days, 21, key="lookback_slider")
+    z_entry = c1.slider(
+        "Entry threshold", 1.0, 4.0, st.session_state.z_entry, 0.1, key="z_entry_slider"
+    )
+    z_exit = c2.slider(
+        "Exit threshold", 0.0, 2.0, st.session_state.z_exit, 0.1, key="z_exit_slider"
+    )
+    lookback = c3.slider(
+        "Lookback (days)", 60, 504, st.session_state.lookback_days, 21, key="lookback_slider"
+    )
     st.session_state.z_entry = z_entry
     st.session_state.z_exit = z_exit
     st.session_state.lookback_days = lookback
@@ -58,7 +64,11 @@ def _spread_panel(pair: tuple[str, str]) -> None:
         m1, m2, m3 = st.columns(3)
         m1.metric("Hedge ratio (beta)", f"{bundle.get('hedge_ratio', float('nan')):.4f}")
         m2.metric("Half-life (days)", f"{bundle.get('half_life', float('nan')):.1f}")
-        latest_z = float(bundle["zscore"].dropna().iloc[-1]) if len(bundle["zscore"].dropna()) else float("nan")
+        latest_z = (
+            float(bundle["zscore"].dropna().iloc[-1])
+            if len(bundle["zscore"].dropna())
+            else float("nan")
+        )
         m3.metric("Current z-score", f"{latest_z:.2f}")
     except ImportError:
         st.error(

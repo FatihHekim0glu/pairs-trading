@@ -30,9 +30,7 @@ __all__ = ["ols_hedge", "tls_hedge"]
 _MIN_OBS: int = 3
 
 
-def _prepare(
-    y: pd.Series, x: pd.Series, *, use_log: bool
-) -> tuple[pd.Series, pd.Series]:
+def _prepare(y: pd.Series, x: pd.Series, *, use_log: bool) -> tuple[pd.Series, pd.Series]:
     """Align ``y`` and ``x``, optionally take logs, drop NaNs, validate.
 
     Parameters
@@ -105,9 +103,7 @@ def ols_hedge(y: pd.Series, x: pd.Series, *, use_log: bool = True) -> HedgeResul
     fit = sm.OLS(y_p.to_numpy(), design).fit()
     alpha = float(fit.params[0])
     beta = float(fit.params[1])
-    residuals = pd.Series(
-        fit.resid, index=y_p.index, name=f"resid_ols({y.name},{x.name})"
-    )
+    residuals = pd.Series(fit.resid, index=y_p.index, name=f"resid_ols({y.name},{x.name})")
     r_squared = float(min(max(float(fit.rsquared), 0.0), 1.0))
     return HedgeResult(
         alpha=alpha,
@@ -169,9 +165,7 @@ def tls_hedge(y: pd.Series, x: pd.Series, *, use_log: bool = True) -> HedgeResul
         beta = -beta
         raw_resid = -raw_resid
     alpha = y_mean - beta * x_mean
-    residuals = pd.Series(
-        raw_resid, index=y_p.index, name=f"resid_tls({y.name},{x.name})"
-    )
+    residuals = pd.Series(raw_resid, index=y_p.index, name=f"resid_tls({y.name},{x.name})")
     # Pseudo-R^2 for TLS: 1 - SS_orth / SS_total_y.
     ss_total = float(np.dot(y_c, y_c))
     ss_resid = float(np.dot(raw_resid, raw_resid))

@@ -54,9 +54,7 @@ def test_monotone_in_adv_floor(seed: int, floor_a: float, floor_b: float) -> Non
     for c in _all_pairs(panel):
         # Random per-pair ADV chosen from the broader bracket.
         adv = float(rng.uniform(1e5, 1e10))
-        candidates.append(
-            Candidate(ticker_a=c.ticker_a, ticker_b=c.ticker_b, adv_a=adv, adv_b=adv)
-        )
+        candidates.append(Candidate(ticker_a=c.ticker_a, ticker_b=c.ticker_b, adv_a=adv, adv_b=adv))
     window = (panel.index[0], panel.index[-1])
     low = min(floor_a, floor_b)
     high = max(floor_a, floor_b)
@@ -84,7 +82,9 @@ def test_counts_sum_to_input() -> None:
     panel = _make_panel()
     candidates = _all_pairs(panel)
     window = (panel.index[0], panel.index[-1])
-    all_annotated = apply_pre_screen(candidates, panel, formation_window=window, return_rejects=True)
+    all_annotated = apply_pre_screen(
+        candidates, panel, formation_window=window, return_rejects=True
+    )
     passes_only = apply_pre_screen(candidates, panel, formation_window=window)
     passes = sum(1 for c in all_annotated if not c.exclusion_reason)
     assert len(all_annotated) == len(candidates)
@@ -117,9 +117,7 @@ def test_continuous_listing_excludes_missing_bars() -> None:
     panel.iloc[10:20, 0] = np.nan
     window = (panel.index[0], panel.index[-1])
     cands = [Candidate(ticker_a="T00", ticker_b="T01", adv_a=1e9, adv_b=1e9)]
-    annotated = apply_pre_screen(
-        cands, panel, formation_window=window, return_rejects=True
-    )
+    annotated = apply_pre_screen(cands, panel, formation_window=window, return_rejects=True)
     assert annotated[0].exclusion_reason
     assert "continuous_listing" in annotated[0].exclusion_reason
 
@@ -139,9 +137,7 @@ def test_missing_ticker_recorded() -> None:
     panel = _make_panel()
     window = (panel.index[0], panel.index[-1])
     cands = [Candidate(ticker_a="ZZZ", ticker_b="T01", adv_a=1e9, adv_b=1e9)]
-    annotated = apply_pre_screen(
-        cands, panel, formation_window=window, return_rejects=True
-    )
+    annotated = apply_pre_screen(cands, panel, formation_window=window, return_rejects=True)
     assert "missing_ticker" in annotated[0].exclusion_reason
 
 
@@ -181,8 +177,13 @@ def test_adv_floor_independent_of_other_filters() -> None:
     cands = [Candidate(ticker_a="T00", ticker_b="T01", adv_a=1.0, adv_b=1.0)]
     window = (panel.index[0], panel.index[-1])
     annotated = apply_pre_screen(
-        cands, panel, formation_window=window, adv_floor=1e9,
-        corr_band=(-1.0, 1.0), hurst_max=1.5, price_floor=0.0,
+        cands,
+        panel,
+        formation_window=window,
+        adv_floor=1e9,
+        corr_band=(-1.0, 1.0),
+        hurst_max=1.5,
+        price_floor=0.0,
         return_rejects=True,
     )
     assert "adv_floor" in annotated[0].exclusion_reason
@@ -195,8 +196,13 @@ def test_price_floor_independent_of_other_filters() -> None:
     cands = [Candidate(ticker_a="T00", ticker_b="T01", adv_a=1e9, adv_b=1e9)]
     window = (panel.index[0], panel.index[-1])
     annotated = apply_pre_screen(
-        cands, panel, formation_window=window, price_floor=5.0,
-        adv_floor=0.0, corr_band=(-1.0, 1.0), hurst_max=1.5,
+        cands,
+        panel,
+        formation_window=window,
+        price_floor=5.0,
+        adv_floor=0.0,
+        corr_band=(-1.0, 1.0),
+        hurst_max=1.5,
         return_rejects=True,
     )
     assert "price_floor" in annotated[0].exclusion_reason
@@ -208,9 +214,14 @@ def test_correlation_band_rejects_outside() -> None:
     window = (panel.index[0], panel.index[-1])
     # Demand near-perfect correlation; reject.
     annotated = apply_pre_screen(
-        cands, panel, formation_window=window,
-        adv_floor=0.0, price_floor=0.0, corr_band=(0.999, 1.0),
-        hurst_max=1.5, return_rejects=True,
+        cands,
+        panel,
+        formation_window=window,
+        adv_floor=0.0,
+        price_floor=0.0,
+        corr_band=(0.999, 1.0),
+        hurst_max=1.5,
+        return_rejects=True,
     )
     assert "correlation_band" in annotated[0].exclusion_reason
 
@@ -221,9 +232,13 @@ def test_adv_falls_through_when_none_and_no_volume() -> None:
     cands = [Candidate(ticker_a="T00", ticker_b="T01")]  # adv_a/adv_b == None
     window = (panel.index[0], panel.index[-1])
     annotated = apply_pre_screen(
-        cands, panel, formation_window=window,
-        adv_floor=1e15, price_floor=0.0,
-        corr_band=(-1.0, 1.0), hurst_max=1.5,
+        cands,
+        panel,
+        formation_window=window,
+        adv_floor=1e15,
+        price_floor=0.0,
+        corr_band=(-1.0, 1.0),
+        hurst_max=1.5,
         return_rejects=True,
     )
     assert "adv_floor" not in annotated[0].exclusion_reason

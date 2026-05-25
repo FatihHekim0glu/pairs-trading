@@ -53,7 +53,9 @@ def _extract_returns(result: object) -> pd.Series:
     raise InputError(msg)
 
 
-def _compute_metrics(returns: pd.Series, equity: pd.Series, ann_factor: int = 252) -> dict[str, float]:
+def _compute_metrics(
+    returns: pd.Series, equity: pd.Series, ann_factor: int = 252
+) -> dict[str, float]:
     clean = returns.dropna()
     if clean.empty:
         return {"annualised_return": 0.0, "annualised_vol": 0.0, "sharpe": 0.0, "max_drawdown": 0.0}
@@ -135,9 +137,7 @@ def run_multi_pair_backtest(
     reselection_dates = {pd.Timestamp(d) for d in walk_forward_dates}
     cap_kwargs = dict(cap_kwargs or {})
 
-    weights_history = pd.DataFrame(
-        0.0, index=index, columns=pair_ids, dtype=float
-    )
+    weights_history = pd.DataFrame(0.0, index=index, columns=pair_ids, dtype=float)
     gross_returns = pd.Series(0.0, index=index, dtype=float)
     sector_labels = sorted({sector_map[p] for p in pair_ids if p in sector_map})
     sector_gross = pd.DataFrame(0.0, index=index, columns=sector_labels, dtype=float)
@@ -186,7 +186,7 @@ def run_multi_pair_backtest(
             sector_map=sector_map,
             asset_legs_map=asset_legs_map,
             asof=asof,
-            **cap_kwargs,
+            **cap_kwargs,  # type: ignore[arg-type]
         )
         cap_events.extend(ev)
 

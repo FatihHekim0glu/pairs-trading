@@ -81,7 +81,7 @@ def test_derive_rng_empty_label_is_accepted() -> None:
 
 def test_derive_rng_rejects_non_generator_parent() -> None:
     """Plain ``RandomState`` or ``int`` parents raise ``TypeError``."""
-    with pytest.raises(TypeError, match="numpy.random.Generator"):
+    with pytest.raises(TypeError, match=r"numpy\.random\.Generator"):
         derive_rng(42, "child")  # type: ignore[arg-type]
 
 
@@ -97,6 +97,4 @@ def test_derive_rng_child_independent_of_parent_after_spawn() -> None:
     parent_b = default_rng(0)
     derive_rng(parent_a, "ignored").standard_normal(100)
     # parent_a and parent_b should still produce the same next draws.
-    np.testing.assert_array_equal(
-        parent_a.standard_normal(8), parent_b.standard_normal(8)
-    )
+    np.testing.assert_array_equal(parent_a.standard_normal(8), parent_b.standard_normal(8))

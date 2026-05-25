@@ -59,9 +59,7 @@ def test_env_override_offline_flag(monkeypatch: pytest.MonkeyPatch) -> None:
     assert settings.offline is True
 
 
-def test_env_override_data_dir(
-    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
-) -> None:
+def test_env_override_data_dir(monkeypatch: pytest.MonkeyPatch, tmp_path: Path) -> None:
     """``PAIRS_DATA_DIR`` overrides the per-user default."""
     custom = tmp_path / "data"
     monkeypatch.setenv("PAIRS_DATA_DIR", str(custom))

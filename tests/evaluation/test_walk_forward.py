@@ -54,9 +54,7 @@ def test_fold_count_matches_steps(
         assert start <= end
 
 
-def test_rejects_non_dataframe(
-    mock_pair_selector, mock_pair_backtester
-) -> None:
+def test_rejects_non_dataframe(mock_pair_selector, mock_pair_backtester) -> None:
     with pytest.raises(InputError):
         walk_forward_anchored(
             "not a frame",  # type: ignore[arg-type]
@@ -65,9 +63,7 @@ def test_rejects_non_dataframe(
         )
 
 
-def test_rejects_non_datetime_index(
-    mock_pair_selector, mock_pair_backtester
-) -> None:
+def test_rejects_non_datetime_index(mock_pair_selector, mock_pair_backtester) -> None:
     prices = pd.DataFrame({"A": [1.0, 2.0, 3.0]})
     with pytest.raises(InputError):
         walk_forward_anchored(
@@ -77,12 +73,8 @@ def test_rejects_non_datetime_index(
         )
 
 
-def test_rejects_unsorted_index(
-    mock_pair_selector, mock_pair_backtester
-) -> None:
-    idx = pd.DatetimeIndex(
-        ["2020-01-03", "2020-01-01", "2020-01-02"]
-    )
+def test_rejects_unsorted_index(mock_pair_selector, mock_pair_backtester) -> None:
+    idx = pd.DatetimeIndex(["2020-01-03", "2020-01-01", "2020-01-02"])
     prices = pd.DataFrame({"A": [1.0, 2.0, 3.0]}, index=idx)
     with pytest.raises(InputError):
         walk_forward_anchored(
@@ -104,9 +96,7 @@ def test_rejects_invalid_train_years(
         )
 
 
-def test_rejects_negative_purge(
-    synthetic_prices, mock_pair_selector, mock_pair_backtester
-) -> None:
+def test_rejects_negative_purge(synthetic_prices, mock_pair_selector, mock_pair_backtester) -> None:
     with pytest.raises(InputError):
         walk_forward_anchored(
             synthetic_prices,
@@ -153,9 +143,7 @@ def test_returns_empty_when_train_window_exceeds_span(
     assert result.sharpe_ci_high == float("inf")
 
 
-def test_backtester_must_return_series(
-    synthetic_prices, mock_pair_selector
-) -> None:
+def test_backtester_must_return_series(synthetic_prices, mock_pair_selector) -> None:
     def bad_backtester(test_prices, _selection):  # type: ignore[no-untyped-def]
         return list(range(len(test_prices)))
 
@@ -171,9 +159,7 @@ def test_backtester_must_return_series(
         )
 
 
-def test_embargo_days_recorded(
-    synthetic_prices, mock_pair_selector, mock_pair_backtester
-) -> None:
+def test_embargo_days_recorded(synthetic_prices, mock_pair_selector, mock_pair_backtester) -> None:
     # Non-zero embargo_pct converts to a positive embargo_days reading.
     result = walk_forward_anchored(
         synthetic_prices,
@@ -190,9 +176,7 @@ def test_embargo_days_recorded(
     assert result.purge_days == 2
 
 
-def test_purge_boundary_drops_overlap(
-    mock_pair_selector, mock_pair_backtester
-) -> None:
+def test_purge_boundary_drops_overlap(mock_pair_selector, mock_pair_backtester) -> None:
     # Construct ~4 years of business days so several folds fire, then verify
     # purge_days > 0 produces an OOS series whose first timestamp sits strictly
     # after the anchor + 1 day (i.e. the training tail was purged successfully).

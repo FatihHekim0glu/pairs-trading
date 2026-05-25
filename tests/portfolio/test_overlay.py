@@ -13,7 +13,9 @@ def test_vol_target_reduces_vol_toward_target() -> None:
     n = 2000
     # Vol per bar = 0.16 / sqrt(252) ~ 0.0101 (annualised 16%).
     daily_vol = 0.16 / math.sqrt(252)
-    returns = pd.Series(rng.normal(scale=daily_vol, size=n), index=pd.bdate_range("2010-01-04", periods=n))
+    returns = pd.Series(
+        rng.normal(scale=daily_vol, size=n), index=pd.bdate_range("2010-01-04", periods=n)
+    )
     mult = vol_target_overlay(returns, target_vol=0.08, window=20, clip=(0.1, 2.0))
     scaled = returns * mult
     realised_ann = float(scaled.std(ddof=1)) * math.sqrt(252)
@@ -48,7 +50,9 @@ def test_vol_target_no_lookahead() -> None:
 def test_killswitch_trips_at_threshold() -> None:
     idx = pd.bdate_range("2020-01-02", periods=200)
     # Build an equity curve with a clear 10% drawdown.
-    eq = pd.Series(np.linspace(1.0, 1.2, 100).tolist() + np.linspace(1.2, 1.05, 100).tolist(), index=idx)
+    eq = pd.Series(
+        np.linspace(1.0, 1.2, 100).tolist() + np.linspace(1.2, 1.05, 100).tolist(), index=idx
+    )
     mult, events = drawdown_killswitch(eq, dd_threshold=0.08, dd_window=200, ladder_days=10)
     assert any(e.trigger == "dd_threshold" for e in events)
     # Multiplier should drop to 0 at some point after the trip.

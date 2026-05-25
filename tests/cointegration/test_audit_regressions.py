@@ -29,7 +29,6 @@ from pairs.cointegration import (
 from pairs.cointegration.bootstrap import _stationary_indices
 from pairs.cointegration.results import TestDirection
 
-
 # ---------------------------------------------------------------------------
 # Engle-Granger: direction selection
 # ---------------------------------------------------------------------------

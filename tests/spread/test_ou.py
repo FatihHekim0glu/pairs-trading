@@ -33,9 +33,7 @@ def test_fit_ou_parity_with_autoreg(simulated_ou) -> None:
     n=st.integers(min_value=1000, max_value=3000),
     seed=st.integers(min_value=0, max_value=10_000),
 )
-def test_ou_recovers_half_life_within_50pct(
-    simulated_ou, theta: float, n: int, seed: int
-) -> None:
+def test_ou_recovers_half_life_within_50pct(simulated_ou, theta: float, n: int, seed: int) -> None:
     # The AR(1) / OLS estimator of phi is biased downward as phi -> 1 (slow
     # mean reversion); slow-reversion OU on short samples accumulates
     # half-life error. The 50% band documented here matches the small-sample

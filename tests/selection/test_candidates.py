@@ -26,10 +26,7 @@ class _PairUniverseStub:
 
 
 def _curated_25() -> _PairUniverseStub:
-    pairs = tuple(
-        _PairSpecStub(a=f"A{i:02d}", b=f"B{i:02d}")
-        for i in range(25)
-    )
+    pairs = tuple(_PairSpecStub(a=f"A{i:02d}", b=f"B{i:02d}") for i in range(25))
     return _PairUniverseStub(pairs=pairs)
 
 
@@ -42,12 +39,8 @@ def _make_panel(n_tickers: int) -> pd.DataFrame:
 
 
 def _patch_data(monkeypatch: Any, pair_universe: _PairUniverseStub) -> None:
-    monkeypatch.setattr(
-        candidates_module, "load_pair_universe", lambda _name: pair_universe
-    )
-    monkeypatch.setattr(
-        candidates_module, "is_blacklisted", lambda _t, _asof: False
-    )
+    monkeypatch.setattr(candidates_module, "load_pair_universe", lambda _name: pair_universe)
+    monkeypatch.setattr(candidates_module, "is_blacklisted", lambda _t, _asof: False)
 
 
 def test_curated_mode_returns_25_pairs(monkeypatch: Any) -> None:
@@ -63,9 +56,7 @@ def test_curated_mode_returns_25_pairs(monkeypatch: Any) -> None:
 
 
 def test_within_sector_unknown_group_returns_all_pairs(monkeypatch: Any) -> None:
-    monkeypatch.setattr(
-        candidates_module, "is_blacklisted", lambda _t, _asof: False
-    )
+    monkeypatch.setattr(candidates_module, "is_blacklisted", lambda _t, _asof: False)
     panel = _make_panel(5)
     cands = generate_candidates(
         "ignored",
@@ -80,9 +71,7 @@ def test_within_sector_unknown_group_returns_all_pairs(monkeypatch: Any) -> None
 
 
 def test_force_required_above_1500_pairs(monkeypatch: Any) -> None:
-    monkeypatch.setattr(
-        candidates_module, "is_blacklisted", lambda _t, _asof: False
-    )
+    monkeypatch.setattr(candidates_module, "is_blacklisted", lambda _t, _asof: False)
     # 60 choose 2 == 1770 > 1500
     panel = _make_panel(60)
     with pytest.raises(InputError):
@@ -104,9 +93,7 @@ def test_force_required_above_1500_pairs(monkeypatch: Any) -> None:
 
 
 def test_unknown_mode_raises(monkeypatch: Any) -> None:
-    monkeypatch.setattr(
-        candidates_module, "is_blacklisted", lambda _t, _asof: False
-    )
+    monkeypatch.setattr(candidates_module, "is_blacklisted", lambda _t, _asof: False)
     panel = _make_panel(3)
     with pytest.raises(InputError):
         generate_candidates(
@@ -128,9 +115,7 @@ def test_non_dataframe_raises() -> None:
 
 
 def test_within_sector_respects_sector_map(monkeypatch: Any) -> None:
-    monkeypatch.setattr(
-        candidates_module, "is_blacklisted", lambda _t, _asof: False
-    )
+    monkeypatch.setattr(candidates_module, "is_blacklisted", lambda _t, _asof: False)
     panel = _make_panel(4)
     sector_map = {"T00": "Tech", "T01": "Tech", "T02": "Energy", "T03": "Energy"}
     cands = generate_candidates(
@@ -172,9 +157,7 @@ def test_candidate_rejects_empty_ticker() -> None:
 
 
 def test_curated_filters_blacklisted(monkeypatch: Any) -> None:
-    monkeypatch.setattr(
-        candidates_module, "load_pair_universe", lambda _name: _curated_25()
-    )
+    monkeypatch.setattr(candidates_module, "load_pair_universe", lambda _name: _curated_25())
     # Blacklist every A-prefix ticker.
     monkeypatch.setattr(
         candidates_module,

@@ -117,9 +117,7 @@ def fit_ou(spread: pd.Series, *, dt: float = 1.0) -> OUResult:
     sigma = float(np.sqrt(sigma_sq))
     sigma_eq = float(sigma / np.sqrt(2.0 * theta))
     half_life = float(np.log(2.0) / theta)
-    residuals = pd.Series(
-        resid_arr, index=series.index[1:], name=f"resid_ou({series.name})"
-    )
+    residuals = pd.Series(resid_arr, index=series.index[1:], name=f"resid_ou({series.name})")
     return OUResult(
         theta=float(theta),
         mu=float(mu),

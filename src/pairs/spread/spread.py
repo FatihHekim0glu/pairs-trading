@@ -55,9 +55,7 @@ def build_spread(
         if (y_a <= 0).any() or (x_a <= 0).any():
             msg = "use_log=True requires strictly positive prices"
             raise InputError(msg)
-        spread_vals = np.log(y_a.to_numpy()) - float(beta) * np.log(
-            x_a.to_numpy()
-        ) - float(alpha)
+        spread_vals = np.log(y_a.to_numpy()) - float(beta) * np.log(x_a.to_numpy()) - float(alpha)
     else:
         spread_vals = y_a.to_numpy() - float(beta) * x_a.to_numpy() - float(alpha)
     return pd.Series(

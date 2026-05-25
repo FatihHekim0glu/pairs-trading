@@ -39,7 +39,4 @@ def render() -> None:
     version = _resolve_version()
     sha = _resolve_git_sha()
     st.divider()
-    st.caption(
-        f"Data: Yahoo Finance via yfinance | Fetched: {ts} | "
-        f"pairs v{version} | Build {sha}"
-    )
+    st.caption(f"Data: Yahoo Finance via yfinance | Fetched: {ts} | pairs v{version} | Build {sha}")

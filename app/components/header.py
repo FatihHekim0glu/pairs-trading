@@ -36,8 +36,6 @@ def render(page: str) -> None:
     """Render the dashboard header for a given page name."""
     st.title("Pairs Trading Research Lab")
     st.caption(page)
-    badge_md = " ".join(
-        f"[![{label}]({src})]({href})" for label, src, href in BADGES
-    )
+    badge_md = " ".join(f"[![{label}]({src})]({href})" for label, src, href in BADGES)
     st.markdown(badge_md)
     st.divider()

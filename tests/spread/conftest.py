@@ -68,9 +68,7 @@ def cointegrated_prices(simulated_ou):
         # x is a log-random-walk; spread = log(y) - beta*log(x) - alpha is OU.
         x_log_steps = rng.standard_normal(n) * 0.01
         x_log = 4.0 + np.cumsum(x_log_steps)
-        spread = simulated_ou(
-            rng, theta=0.05, mu=0.0, sigma=0.05, n=n, dt=1.0, s0=0.0
-        )
+        spread = simulated_ou(rng, theta=0.05, mu=0.0, sigma=0.05, n=n, dt=1.0, s0=0.0)
         y_log = alpha_true + beta_true * x_log + spread.to_numpy()
         idx = pd.date_range("2020-01-01", periods=n, freq="D")
         y = pd.Series(np.exp(y_log), index=idx, name="y_px")

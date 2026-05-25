@@ -148,9 +148,7 @@ def test_read_manifest_malformed_json_raises(tmp_path: Path) -> None:
 def test_read_manifest_unsupported_schema_raises(tmp_path: Path) -> None:
     """A wrong ``schema_version`` is rejected."""
     target = tmp_path / "wrong-schema.json"
-    target.write_text(
-        json.dumps({"schema_version": 999, "utc_ts": ""}), encoding="utf-8"
-    )
+    target.write_text(json.dumps({"schema_version": 999, "utc_ts": ""}), encoding="utf-8")
     with pytest.raises(ManifestError, match="unsupported manifest schema_version"):
         read_manifest(target)
 

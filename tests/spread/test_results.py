@@ -146,34 +146,54 @@ def test_ou_result_clamps_theta_high() -> None:
 def test_half_life_result_rejects_point_outside_ci() -> None:
     with pytest.raises(InputError):
         HalfLifeResult(
-            point=10.0, ci_lower=12.0, ci_upper=15.0, ci_level=0.95,
-            n_boot=100, method="bootstrap",
+            point=10.0,
+            ci_lower=12.0,
+            ci_upper=15.0,
+            ci_level=0.95,
+            n_boot=100,
+            method="bootstrap",
         )
     with pytest.raises(InputError):
         HalfLifeResult(
-            point=20.0, ci_lower=12.0, ci_upper=15.0, ci_level=0.95,
-            n_boot=100, method="bootstrap",
+            point=20.0,
+            ci_lower=12.0,
+            ci_upper=15.0,
+            ci_level=0.95,
+            n_boot=100,
+            method="bootstrap",
         )
 
 
 def test_half_life_result_rejects_ci_level_outside_unit_open_interval() -> None:
     with pytest.raises(InputError):
         HalfLifeResult(
-            point=10.0, ci_lower=5.0, ci_upper=15.0, ci_level=0.0,
-            n_boot=100, method="bootstrap",
+            point=10.0,
+            ci_lower=5.0,
+            ci_upper=15.0,
+            ci_level=0.0,
+            n_boot=100,
+            method="bootstrap",
         )
     with pytest.raises(InputError):
         HalfLifeResult(
-            point=10.0, ci_lower=5.0, ci_upper=15.0, ci_level=1.0,
-            n_boot=100, method="bootstrap",
+            point=10.0,
+            ci_lower=5.0,
+            ci_upper=15.0,
+            ci_level=1.0,
+            n_boot=100,
+            method="bootstrap",
         )
 
 
 def test_half_life_result_rejects_negative_n_boot() -> None:
     with pytest.raises(InputError):
         HalfLifeResult(
-            point=10.0, ci_lower=5.0, ci_upper=15.0, ci_level=0.95,
-            n_boot=-1, method="bootstrap",
+            point=10.0,
+            ci_lower=5.0,
+            ci_upper=15.0,
+            ci_level=0.95,
+            n_boot=-1,
+            method="bootstrap",
         )
 
 

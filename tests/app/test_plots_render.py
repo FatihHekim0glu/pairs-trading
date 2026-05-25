@@ -15,8 +15,6 @@ from __future__ import annotations
 
 import sys
 from pathlib import Path
-from types import SimpleNamespace
-from unittest.mock import MagicMock
 
 import numpy as np
 import pandas as pd
@@ -49,8 +47,10 @@ def synth_prices() -> pd.DataFrame:
     rng = np.random.default_rng(1)
     common = np.cumsum(rng.standard_normal(200))
     return pd.DataFrame(
-        {"KO": 100.0 + common + rng.standard_normal(200) * 0.5,
-         "PEP": 100.0 + 1.2 * common + rng.standard_normal(200) * 0.5},
+        {
+            "KO": 100.0 + common + rng.standard_normal(200) * 0.5,
+            "PEP": 100.0 + 1.2 * common + rng.standard_normal(200) * 0.5,
+        },
         index=idx,
     )
 
@@ -102,9 +102,7 @@ def patched_streamlit(monkeypatch):
 
     calls: dict[str, list] = {"info": [], "dataframe": [], "success": []}
     monkeypatch.setattr(st, "info", lambda msg, **_: calls["info"].append(msg))
-    monkeypatch.setattr(
-        st, "dataframe", lambda *a, **kw: calls["dataframe"].append((a, kw))
-    )
+    monkeypatch.setattr(st, "dataframe", lambda *a, **kw: calls["dataframe"].append((a, kw)))
     monkeypatch.setattr(st, "success", lambda msg, **_: calls["success"].append(msg))
     # Ensure session_state has the keys the render touches.
     if "selected_pair" not in st.session_state:

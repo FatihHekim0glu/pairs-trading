@@ -72,8 +72,7 @@ def memmel_test(
     rho = cov / (sigma_a * sigma_b)
     rho = float(np.clip(rho, -1.0, 1.0))
     theta = (1.0 / t) * (
-        2.0 * (1.0 - rho)
-        + 0.5 * (sr_a * sr_a + sr_b * sr_b - 2.0 * sr_a * sr_b * rho * rho)
+        2.0 * (1.0 - rho) + 0.5 * (sr_a * sr_a + sr_b * sr_b - 2.0 * sr_a * sr_b * rho * rho)
     )
     if theta <= 0.0:
         raise InputError("Memmel variance term is non-positive")

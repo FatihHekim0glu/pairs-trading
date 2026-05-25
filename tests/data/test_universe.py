@@ -2,13 +2,9 @@
 
 from __future__ import annotations
 
-from pathlib import Path
-
 import pytest
-import yaml
 
 from pairs._exceptions import InputError
-from pairs.data import universe as universe_mod
 from pairs.data.universe import (
     PairSpec,
     PairUniverse,

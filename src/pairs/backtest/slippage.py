@@ -99,7 +99,7 @@ class HalfSpreadSlippage:
             if self._active_index is None:
                 msg = "HalfSpreadSlippage with Series spread requires set_index_value()"
                 raise InputError(msg)
-            spread = float(self.spread_bps.loc[self._active_index])
+            spread = float(self.spread_bps.loc[self._active_index])  # type: ignore[call-overload]
         else:
             spread = float(self.spread_bps)
         return 0.5 * abs(float(qty)) * float(price) * spread * 1e-4

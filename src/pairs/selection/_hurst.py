@@ -129,9 +129,7 @@ def hurst_exponent(
         raise InputError(msg)
 
     n_points = max(4, int(np.log2(max(upper / min_lag, 2.0))) + 1)
-    lags = np.unique(
-        np.round(np.geomspace(min_lag, upper, num=n_points)).astype(int)
-    )
+    lags = np.unique(np.round(np.geomspace(min_lag, upper, num=n_points)).astype(int))
     lags = lags[lags >= min_lag]
     if lags.size < 2:
         msg = "need at least two distinct lag sizes; widen [min_lag, max_lag]"

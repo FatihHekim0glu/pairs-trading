@@ -35,9 +35,7 @@ def test_no_sector_exceeds_cap_post_apply(raw: list[float]) -> None:
         asset_legs_map=asset_legs_map,
     )
     for sector in ("SEC0", "SEC1"):
-        load = float(
-            sum(abs(out.loc[p]) for p in out.index if sector_map[p] == sector)
-        )
+        load = float(sum(abs(out.loc[p]) for p in out.index if sector_map[p] == sector))
         assert load <= 0.30 + 1e-9
 
 
@@ -156,9 +154,7 @@ def test_apply_caps_validates_kwargs(kwargs, match) -> None:
     sector_map, asset_legs_map = _maps(2)
     raw = pd.Series([0.1, 0.1], index=["P0", "P1"])
     with pytest.raises(InputError, match=match):
-        apply_caps(
-            raw, sector_map=sector_map, asset_legs_map=asset_legs_map, **kwargs
-        )
+        apply_caps(raw, sector_map=sector_map, asset_legs_map=asset_legs_map, **kwargs)
 
 
 def test_sector_cap_emits_events() -> None:

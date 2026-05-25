@@ -93,9 +93,7 @@ class KalmanHedge:
         if not 0.0 < float(delta) < 1.0:
             msg = f"delta must lie in (0, 1), got {delta!r}"
             raise InputError(msg)
-        frame = pd.concat(
-            [y.rename("y"), x.rename("x")], axis=1, join="inner"
-        ).dropna()
+        frame = pd.concat([y.rename("y"), x.rename("x")], axis=1, join="inner").dropna()
         if frame.shape[0] < _MIN_OBS:
             msg = f"Kalman filter needs at least {_MIN_OBS} observations"
             raise InsufficientDataError(msg)

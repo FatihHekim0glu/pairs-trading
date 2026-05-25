@@ -13,9 +13,9 @@ _PROJECT_ROOT = Path(__file__).resolve().parent.parent
 if str(_PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(_PROJECT_ROOT))
 
-import streamlit as st
+import streamlit as st  # noqa: E402 - must follow the sys.path bootstrap above
 
-from app.state import init_state
+from app.state import init_state  # noqa: E402 - same rationale
 
 st.set_page_config(
     page_title="Pairs Trading",

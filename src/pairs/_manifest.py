@@ -231,8 +231,7 @@ def read_manifest(path: str | Path) -> RunManifest:
     schema: int = int(payload.get("schema_version", 0))
     if schema != _SCHEMA_VERSION:
         msg = (
-            f"unsupported manifest schema_version={schema} at {source}; "
-            f"expected {_SCHEMA_VERSION}"
+            f"unsupported manifest schema_version={schema} at {source}; expected {_SCHEMA_VERSION}"
         )
         raise ManifestError(msg)
     try:

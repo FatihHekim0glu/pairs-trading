@@ -70,9 +70,7 @@ def test_window_auto_pick_from_half_life(simulated_ou) -> None:
     expected_window = max(2, int(round(2.0 * ou.half_life)))
     z_auto = zscore(spread, window=None, ou_result=ou)
     z_manual = zscore(spread, window=expected_window)
-    pd.testing.assert_series_equal(
-        z_auto.dropna(), z_manual.dropna(), check_names=False
-    )
+    pd.testing.assert_series_equal(z_auto.dropna(), z_manual.dropna(), check_names=False)
 
 
 def test_window_minimum_floor_two(simulated_ou) -> None:
@@ -131,7 +129,7 @@ def test_no_lookahead() -> None:
     s_perturbed.iloc[t + 1 :] = rng.standard_normal(n - t - 1) * 100.0
     z_perturbed = zscore(s_perturbed, window=20)
     np.testing.assert_allclose(
-        z_full.iloc[:t + 1].dropna().to_numpy(),
-        z_perturbed.iloc[:t + 1].dropna().to_numpy(),
+        z_full.iloc[: t + 1].dropna().to_numpy(),
+        z_perturbed.iloc[: t + 1].dropna().to_numpy(),
         atol=1e-12,
     )

@@ -39,9 +39,7 @@ __all__ = [
 class Allocator(Protocol):
     """Structural type for any object that can produce pair weights."""
 
-    def weights(
-        self, spread_pnls: pd.DataFrame, active_mask: pd.Series
-    ) -> pd.Series:
+    def weights(self, spread_pnls: pd.DataFrame, active_mask: pd.Series) -> pd.Series:
         """Return a weight vector indexed by the columns of ``spread_pnls``."""
         ...
 
@@ -73,9 +71,7 @@ class EqualDollarAllocator:
     fallback when other allocators cannot run (insufficient history, etc.).
     """
 
-    def weights(
-        self, spread_pnls: pd.DataFrame, active_mask: pd.Series
-    ) -> pd.Series:
+    def weights(self, spread_pnls: pd.DataFrame, active_mask: pd.Series) -> pd.Series:
         _validate_inputs(spread_pnls, active_mask)
         out = _zero_weights(pd.Index(spread_pnls.columns))
         active = active_mask[active_mask]
@@ -105,9 +101,7 @@ class InverseVolAllocator:
     window: int = 60
     min_periods: int = 20
 
-    def weights(
-        self, spread_pnls: pd.DataFrame, active_mask: pd.Series
-    ) -> pd.Series:
+    def weights(self, spread_pnls: pd.DataFrame, active_mask: pd.Series) -> pd.Series:
         _validate_inputs(spread_pnls, active_mask)
         if int(self.window) <= 1:
             msg = f"window must be > 1, got {self.window!r}"
@@ -222,9 +216,7 @@ class HRPAllocator:
     max_weight: float | None = None
     min_history: int = 60
 
-    def weights(
-        self, spread_pnls: pd.DataFrame, active_mask: pd.Series
-    ) -> pd.Series:
+    def weights(self, spread_pnls: pd.DataFrame, active_mask: pd.Series) -> pd.Series:
         _validate_inputs(spread_pnls, active_mask)
         out = _zero_weights(pd.Index(spread_pnls.columns))
         active = active_mask[active_mask].index
@@ -258,9 +250,7 @@ class HRPAllocator:
                 room = ~over & (weights > 0.0)
                 if not room.any():
                     break
-                weights.loc[room] += excess * (
-                    weights.loc[room] / float(weights.loc[room].sum())
-                )
+                weights.loc[room] += excess * (weights.loc[room] / float(weights.loc[room].sum()))
             weights = weights / float(weights.sum())
         out.loc[weights.index] = weights.to_numpy(dtype=float)
         return out

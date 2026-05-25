@@ -89,7 +89,7 @@ def _safe_half_life(pipeline_result: Any) -> float:
     # Support both float-like returns and dataclass-style results.
     point = getattr(result, "point", result)
     try:
-        return float(point)
+        return float(point)  # type: ignore[arg-type]
     except (TypeError, ValueError):
         return float("nan")
 

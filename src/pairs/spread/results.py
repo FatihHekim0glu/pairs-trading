@@ -164,10 +164,7 @@ class HalfLifeResult:
         hi = float(self.ci_upper)
         point = float(self.point)
         if not lo <= point <= hi:
-            msg = (
-                "expected ci_lower <= point <= ci_upper, got "
-                f"({lo!r}, {point!r}, {hi!r})"
-            )
+            msg = f"expected ci_lower <= point <= ci_upper, got ({lo!r}, {point!r}, {hi!r})"
             raise InputError(msg)
         if not 0.0 < float(self.ci_level) < 1.0:
             msg = f"ci_level must lie in (0, 1), got {self.ci_level!r}"

@@ -13,14 +13,11 @@ Returning typed library objects (``ScreenResult``, ``BacktestResult``,
 from __future__ import annotations
 
 from collections.abc import Sequence
-from dataclasses import replace
 from datetime import date
 from typing import Any
 
-import numpy as np
 import pandas as pd
 import streamlit as st
-
 
 # ---------------------------------------------------------------------------
 # Price loading
@@ -231,7 +228,7 @@ def _run_backtest_window(
     prices_b: pd.Series,
     cost_profile: str,
     sizing: str,
-):
+) -> tuple[Any, float]:
     """Single-window backtest helper. Estimates hedge on the first 40% of the
     window, builds spread + signal, runs `backtest_pair`. Returns the
     `BacktestResult` plus the estimated hedge ratio."""
@@ -240,9 +237,7 @@ def _run_backtest_window(
     y, x, beta, _alpha, _z, signal = _build_backtest_inputs(prices_a, prices_b)
     profile = load_profile(cost_profile)
     sizing_mapped = _SIZING_ALIAS.get(sizing, "dollar_neutral")
-    result = backtest_pair(
-        y, x, signal, hedge_ratio=beta, cost_model=profile, sizing=sizing_mapped
-    )
+    result = backtest_pair(y, x, signal, hedge_ratio=beta, cost_model=profile, sizing=sizing_mapped)
     return result, beta
 
 
@@ -332,7 +327,7 @@ def run_backtest_cached(
 # ---------------------------------------------------------------------------
 
 
-def _allocator(name: str):
+def _allocator(name: str) -> Any:
     from pairs.portfolio import EqualDollarAllocator, HRPAllocator, InverseVolAllocator
 
     return {
@@ -397,9 +392,7 @@ def run_portfolio_cached(
         min_cooldown_days=10,
     )
 
-    rebalance_offset = {"monthly": "MS", "quarterly": "QS", "annual": "YS"}.get(
-        rebalance, "QS"
-    )
+    rebalance_offset = {"monthly": "MS", "quarterly": "QS", "annual": "YS"}.get(rebalance, "QS")
     walk_forward_dates = pd.date_range(
         pd.Timestamp(oos_start), pd.Timestamp(oos_end), freq=rebalance_offset
     ).tolist()

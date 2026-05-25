@@ -137,9 +137,7 @@ def test_runner_no_lookahead_end_to_end() -> None:
     a = _run(pair_results_a)
     b = _run(pair_results_b)
     # Weights at bar t depend only on history < t, so weights[<150] identical.
-    pd.testing.assert_frame_equal(
-        a.weights_history.iloc[:150], b.weights_history.iloc[:150]
-    )
+    pd.testing.assert_frame_equal(a.weights_history.iloc[:150], b.weights_history.iloc[:150])
 
 
 def test_runner_metrics_populated() -> None:

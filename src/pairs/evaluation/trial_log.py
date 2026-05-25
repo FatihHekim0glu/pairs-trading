@@ -26,7 +26,7 @@ try:  # pragma: no cover - optional dependency
 
     _HAS_FILELOCK = True
 except Exception:  # pragma: no cover - exercised when filelock missing
-    FileLock = None  # type: ignore[assignment]
+    FileLock = None  # type: ignore[assignment,misc]
     _HAS_FILELOCK = False
 
 __all__ = ["TrialLog"]

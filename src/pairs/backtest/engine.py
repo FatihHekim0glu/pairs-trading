@@ -56,6 +56,7 @@ def _maybe_set_active_index(cost_model: Any, index_value: object) -> None:
     if isinstance(sub, HalfSpreadSlippage):
         sub.set_index_value(index_value)
 
+
 _TRADE_COLUMNS = (
     "entry_time",
     "exit_time",

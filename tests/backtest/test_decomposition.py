@@ -28,9 +28,9 @@ def test_decomposition_sums_to_total_cost_drag(rng: np.random.Generator) -> None
     )
     result = backtest_pair(a, b, signal, hedge_ratio=1.0, cost_model=cost, capital=100_000.0)
 
-    decomp_total = result.cost_decomposition[
-        ["commission", "slippage", "borrow", "dividend"]
-    ].sum().sum()
+    decomp_total = (
+        result.cost_decomposition[["commission", "slippage", "borrow", "dividend"]].sum().sum()
+    )
     # Rebuild gross - net per bar; they must equal the decomposition row-wise.
     drag = (result.gross_returns - result.returns) * 100_000.0
     np.testing.assert_allclose(

@@ -136,7 +136,12 @@ def hansen_spa(
     if _HAS_ARCH:  # pragma: no cover - depends on optional package
         try:
             loss = -excess  # SPA in `arch` works in loss space
-            spa = _ArchSPA(loss[:, 0], loss[:, 1:], reps=int(n_boot), seed=int(generator.integers(0, 2**31 - 1)))
+            spa = _ArchSPA(
+                loss[:, 0],
+                loss[:, 1:],
+                reps=int(n_boot),
+                seed=int(generator.integers(0, 2**31 - 1)),
+            )
             spa.compute()
             pvals = spa.pvalues
             best_idx = int(np.argmax(excess.mean(axis=0)))

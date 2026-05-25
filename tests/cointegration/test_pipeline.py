@@ -137,11 +137,7 @@ def test_pipeline_four_cell_logic_truth_table(eg_ok, joh_ok, kp_ok, legs_ok):
         leg1_unit_root=leg1,
         bootstrap=None,
         cointegrated=bool(
-            eg.pvalue < 0.05
-            and joh.rank >= 1
-            and kp.is_stationary
-            and leg0.is_i1
-            and leg1.is_i1,
+            eg.pvalue < 0.05 and joh.rank >= 1 and kp.is_stationary and leg0.is_i1 and leg1.is_i1,
         ),
         alpha=0.05,
     )

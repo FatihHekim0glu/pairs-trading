@@ -55,7 +55,9 @@ def mock_pair_backtester(
         sigma = 0.001
         # Use a separate generator seeded from the panel hash for determinism
         # across calls with the same input.
-        seed = int(abs(hash(tuple(test_prices.index.astype("int64").to_numpy()[:5].tolist()))) % (2**32))
+        seed = int(
+            abs(hash(tuple(test_prices.index.astype("int64").to_numpy()[:5].tolist()))) % (2**32)
+        )
         local = np.random.default_rng(seed + int(rng.integers(0, 1_000_000)))
         ret = local.normal(0.0002, sigma, size=test_prices.shape[0])
         return pd.Series(ret, index=test_prices.index)

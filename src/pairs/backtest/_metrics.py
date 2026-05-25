@@ -58,7 +58,7 @@ def turnover(positions: pd.Series | pd.DataFrame) -> float:
     pos = positions.to_numpy(dtype=float)
     if pos.ndim == 1:
         return float(np.abs(np.diff(pos, prepend=0.0)).sum())
-    return float(np.abs(np.diff(pos, axis=0, prepend=np.zeros((1, pos.shape[1])))).sum())
+    return float(np.abs(np.diff(pos, axis=0, prepend=np.zeros((1, pos.shape[1])))).sum())  # type: ignore[misc]
 
 
 def hit_rate(trades: pd.DataFrame) -> float:

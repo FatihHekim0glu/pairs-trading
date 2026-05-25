@@ -109,7 +109,9 @@ def cpcv_paths(
 
     for combo in combos:
         test_groups = list(combo)
-        test_index = pd.DatetimeIndex(np.concatenate([group_slices[g].to_numpy() for g in test_groups]))
+        test_index = pd.DatetimeIndex(
+            np.concatenate([group_slices[g].to_numpy() for g in test_groups])
+        )
         train_groups = [g for g in range(n_groups) if g not in set(test_groups)]
         train_index = pd.DatetimeIndex(
             np.concatenate([group_slices[g].to_numpy() for g in train_groups])

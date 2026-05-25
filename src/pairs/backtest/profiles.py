@@ -101,10 +101,7 @@ def load_profile(name: str, *, root: Path | None = None) -> CompositeCost:
     path = base / f"{name}.yaml"
     if not path.is_file():
         available = available_profiles(base)
-        msg = (
-            f"profile {name!r} not found at {path}; "
-            f"available profiles: {available}"
-        )
+        msg = f"profile {name!r} not found at {path}; available profiles: {available}"
         raise InputError(msg)
     try:
         payload = yaml.safe_load(path.read_text(encoding="utf-8"))

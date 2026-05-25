@@ -39,9 +39,8 @@ def _make_yf_like_frame(tickers: list[str], n: int = 10) -> pd.DataFrame:
         names=["ticker", "field"],
     )
     return pd.DataFrame(
-        data=1.0 + 0.0 * (idx.values.reshape(-1, 1) == idx.values.reshape(-1, 1)).repeat(
-            len(cols), axis=1
-        ),
+        data=1.0
+        + 0.0 * (idx.values.reshape(-1, 1) == idx.values.reshape(-1, 1)).repeat(len(cols), axis=1),
         index=idx,
         columns=cols,
     )

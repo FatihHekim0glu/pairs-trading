@@ -68,7 +68,9 @@ class PairLifecycle:
         self._stopped_out[str(pair_id)] = pd.Timestamp(asof)
 
     def on_walkforward_reselect(
-        self, new_universe: Iterable[str], asof: pd.Timestamp  # noqa: ARG002
+        self,
+        new_universe: Iterable[str],
+        asof: pd.Timestamp,  # noqa: ARG002
     ) -> None:
         """Refresh the universe of tradable pairs.
 
@@ -88,9 +90,7 @@ class PairLifecycle:
         remaining = self._required_cooldown(pid) - elapsed
         return max(0, int(remaining))
 
-    def can_reenter(
-        self, pair_id: str, asof: pd.Timestamp, prices: pd.DataFrame
-    ) -> bool:
+    def can_reenter(self, pair_id: str, asof: pd.Timestamp, prices: pd.DataFrame) -> bool:
         """Return ``True`` when the cooldown has elapsed *and* the retest passes."""
         if self.cooldown_remaining(pair_id, asof) > 0:
             return False

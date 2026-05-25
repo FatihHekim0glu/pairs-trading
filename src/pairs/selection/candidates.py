@@ -75,7 +75,7 @@ def _enumerate_within_group(
     """Enumerate combinations within each group of the given attribute."""
     groups: dict[str, list[str]] = {}
     for ticker in tickers:
-        group = (sector_map.get(ticker, "unknown") if sector_map else "unknown")
+        group = sector_map.get(ticker, "unknown") if sector_map else "unknown"
         groups.setdefault(group, []).append(ticker)
 
     out: list[Candidate] = []
@@ -159,7 +159,9 @@ def generate_candidates(
         raise InputError(msg)
 
     tickers = _filter_blacklisted(_ticker_universe(prices), asof)
-    attribute = "sector" if mode == "within_sector" else "sub_industry"
+    attribute: Literal["sector", "sub_industry"] = (
+        "sector" if mode == "within_sector" else "sub_industry"
+    )
     candidates = _enumerate_within_group(tickers, sector_map, attribute)
 
     if len(candidates) > _HARD_CAP and not force:

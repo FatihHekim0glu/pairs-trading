@@ -26,9 +26,7 @@ def _dummy_ou_for(spread: pd.Series, *, half_life: float = 20.0) -> OUResult:
         half_life=half_life,
         phi=max(min(phi, 0.999_999), 1e-3),
         intercept=0.0,
-        residuals=pd.Series(
-            np.zeros(max(n - 1, 1)), index=spread.index[1:], name="resid"
-        ),
+        residuals=pd.Series(np.zeros(max(n - 1, 1)), index=spread.index[1:], name="resid"),
         log_likelihood=0.0,
         dt=1.0,
         n_obs=max(n - 1, 1),

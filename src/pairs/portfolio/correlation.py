@@ -102,7 +102,7 @@ def correlation_filter(
             value = corr.loc[a, b]
             if pd.isna(value):
                 continue
-            triples.append((float(value), a, b))
+            triples.append((float(value), a, b))  # type: ignore[arg-type]
     triples.sort(reverse=True)
     for value, a, b in triples:
         if value <= float(max_pairwise_corr):

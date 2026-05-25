@@ -136,9 +136,7 @@ def test_run_screen_completes_on_curated_universe(mocked_load_prices):
     formation_window to `screen_cointegration` without raising."""
     from app.cache import run_screen
 
-    result = run_screen.__wrapped__(
-        "curated_25_v1", date(2020, 1, 1), date(2022, 12, 31), "hash"
-    )
+    result = run_screen.__wrapped__("curated_25_v1", date(2020, 1, 1), date(2022, 12, 31), "hash")
     # ScreenResult exposes a `diagnostics` DataFrame.
     diag = getattr(result, "diagnostics", None)
     assert diag is not None, "ScreenResult must expose a diagnostics frame"
@@ -184,10 +182,15 @@ def test_run_backtest_cached_returns_dashboard_dict(mocked_load_prices):
     )
     assert isinstance(result, dict)
     for key in (
-        "is_result", "oos_result",
-        "is_sharpe", "oos_sharpe", "sharpe",
-        "max_drawdown", "turnover",
-        "equity_curve", "trades",
+        "is_result",
+        "oos_result",
+        "is_sharpe",
+        "oos_sharpe",
+        "sharpe",
+        "max_drawdown",
+        "turnover",
+        "equity_curve",
+        "trades",
     ):
         assert key in result, f"backtest bundle missing key {key!r}"
     assert isinstance(result["equity_curve"], pd.Series)
@@ -211,9 +214,7 @@ def test_run_backtest_cached_degrades_when_train_history_unavailable(yf_panel_fa
         # come back empty.
         s = pd.Timestamp(start) if start is not None else pd.Timestamp("2025-01-01")
         if s.year < 2025:
-            return yf_panel_factory(
-                list(tickers), start="2025-01-01", end="2025-01-02"
-            ).iloc[0:0]
+            return yf_panel_factory(list(tickers), start="2025-01-01", end="2025-01-02").iloc[0:0]
         return yf_panel_factory(list(tickers), start=str(start), end=str(end))
 
     with _patch("pairs.data.load_prices", side_effect=_train_blind):
@@ -267,12 +268,19 @@ def test_run_portfolio_cached_returns_dashboard_dict(mocked_load_prices):
     )
     assert isinstance(result, dict)
     for key in (
-        "portfolio_result", "equity_curve", "returns",
-        "sharpe", "portfolio_sharpe",
-        "annual_return", "annualised_return",
-        "annual_vol", "annualised_vol",
+        "portfolio_result",
+        "equity_curve",
+        "returns",
+        "sharpe",
+        "portfolio_sharpe",
+        "annual_return",
+        "annualised_return",
+        "annual_vol",
+        "annualised_vol",
         "max_drawdown",
-        "per_pair_pnl", "per_pair_sharpe", "pair_returns",
+        "per_pair_pnl",
+        "per_pair_sharpe",
+        "pair_returns",
     ):
         assert key in result, f"portfolio bundle missing key {key!r}"
     assert isinstance(result["equity_curve"], pd.Series)
