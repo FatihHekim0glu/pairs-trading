@@ -26,7 +26,7 @@ try:  # pragma: no cover - optional dependency
 
     _HAS_ARCH = True
 except Exception:  # pragma: no cover - exercised when arch missing
-    _ArchSPA = None  # type: ignore[assignment]
+    _ArchSPA = None  # type: ignore[assignment,misc]
     _HAS_ARCH = False
 
 __all__ = ["hansen_spa"]

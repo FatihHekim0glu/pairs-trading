@@ -32,7 +32,7 @@ try:  # pragma: no cover - optional dependency
 
     _HAS_ARCH = True
 except Exception:  # pragma: no cover - exercised when arch is missing
-    StationaryBootstrap = None  # type: ignore[assignment]
+    StationaryBootstrap = None  # type: ignore[assignment,misc]
     _HAS_ARCH = False
 
 
