@@ -39,6 +39,26 @@ streamlit run app/streamlit_app.py
 - Out-of-sample evaluation uses anchored walk-forward windows plus Combinatorial Purged Cross-Validation.
 - Headline metric is the Deflated Sharpe Ratio with Probability of Backtest Overfitting (PBO) reported beside it.
 
+## Data sources & universe (survivorship-bias-aware)
+
+Pairs trading is the strategy class most sensitive to survivorship bias because the trade thesis is *relative*: any pair containing a name that was later acquired or delisted at a wide spread looks like a clean mean-reversion winner in hindsight. Empirically, roughly one in ten pairs in any five-year window contains such a name, which biases reported Sharpes upward by a non-trivial margin and silently inflates win rates in the long-tail months.
+
+The repo now ships with a two-tier data layer that lets you opt into an honest backtest without changing call sites:
+
+- `pairs.data_providers.PolygonProvider` -- REST client for Polygon.io with token-bucket rate limiting (100 rpm Starter tier), exponential backoff on 429/5xx, and three endpoints: `get_eod`, `get_ticker_meta`, and crucially `get_grouped_daily`. The grouped-daily endpoint returns every ticker that *actually* traded on a given historical calendar date -- delisted and acquired names included. That is the single piece of data the free yfinance feed cannot give you, and it is what makes a point-in-time universe possible at this price point.
+- `pairs.data_providers.YFinanceProvider` -- mirrors the same surface and delegates to the existing parquet cache so local dev keeps working without a key. Grouped-daily and ticker-meta raise `ProviderError` because yfinance has no equivalent.
+- `pairs.data_providers.make_provider()` -- environment-driven factory. Returns Polygon when `POLYGON_API_KEY` is set, yfinance otherwise. The rest of the codebase depends on the abstract surface, not the concrete class.
+- `pairs.data_providers.SP500UniverseBuilder` -- intersects a snapshot of modern S&P 500 constituents with Polygon's grouped-daily list at each as-of date. Members who were not trading on that date (pre-IPO, post-delisting) are dropped; `get_membership_window(start, end, freq="ME")` returns one list per month-end so the request count scales with rebalances, not calendar days.
+
+The Streamlit Pair Finder exposes a "Pair selection universe" toggle (Custom vs S&P 500 PIT) and prints two provenance badges in the result panel -- `data: polygon|yfinance` and `universe: PIT|custom` -- so the source of every number on screen is visible. PIT is the right default for any honest research run; Custom remains useful for narrow sector studies (`xlk_v1`, `curated_25_v1`).
+
+To enable the Polygon path:
+
+```bash
+export POLYGON_API_KEY=...   # Starter tier is sufficient
+streamlit run app/streamlit_app.py
+```
+
 ## Honest limitations
 
 - Survivorship bias is mitigated by adding delisted tickers where available, but the free `yfinance` tier excludes most delistings; results on the live universe overstate the truth for any backtest before 2010.
