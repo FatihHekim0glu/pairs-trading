@@ -1,5 +1,7 @@
 # pairs-trading
 
+> **Now live as an interactive web tool at https://fatihhekimoglu-platform.vercel.app/tools/pairs-trading** — part of the fatihhekimoglu.com quantitative-tools platform. The Streamlit app here remains usable for local development; the hosted version uses the same compute library wrapped in a FastAPI backend.
+
 Cointegration-based statistical arbitrage with walk-forward validation, Deflated Sharpe ratios, and an honest in-sample-vs-out-of-sample comparison. The Out-of-Sample number is the headline because that is what survives contact with the future.
 
 ![CI](https://github.com/FatihHekim0glu/pairs-trading/actions/workflows/ci.yml/badge.svg) ![Coverage](https://codecov.io/gh/FatihHekim0glu/pairs-trading/branch/main/graph/badge.svg) ![License](https://img.shields.io/badge/license-MIT-blue.svg) ![Python](https://img.shields.io/badge/python-3.11+-blue.svg) ![Ruff](https://img.shields.io/badge/code%20style-ruff-blue.svg) ![Mypy](https://img.shields.io/badge/types-mypy%20strict-blue.svg)
